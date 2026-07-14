@@ -32,20 +32,7 @@ const quickLinks: FooterLink[] = [
   },
 ];
 
-const accountLinks: FooterLink[] = [
-  {
-    label: "Login",
-    href: "/login",
-  },
-  {
-    label: "Create Account",
-    href: "/register",
-  },
-  {
-    label: "List Property",
-    href: "/list-property",
-  },
-];
+
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -73,6 +60,36 @@ export default function Footer() {
             through a simple and organized platform.
           </p>
 
+
+        </div>
+
+        {/* Quick links */}
+        <div>
+          <h2 className="text-base font-bold text-white">
+            Quick Links
+          </h2>
+
+          <ul className="mt-5 space-y-3">
+            {quickLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-teal-400"
+                >
+                  {link.label}
+
+                  <FaArrowUpRightFromSquare size={11} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Account links */}
+        <div>
+          <h2 className="text-base font-bold text-white">
+           Social links
+          </h2>
           {/* Social links */}
           <div className="mt-6 flex items-center gap-3">
             <a
@@ -103,50 +120,7 @@ export default function Footer() {
               <FaEnvelope size={18} />
             </a>
           </div>
-        </div>
 
-        {/* Quick links */}
-        <div>
-          <h2 className="text-base font-bold text-white">
-            Quick Links
-          </h2>
-
-          <ul className="mt-5 space-y-3">
-            {quickLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-teal-400"
-                >
-                  {link.label}
-
-                  <FaArrowUpRightFromSquare size={11} />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Account links */}
-        <div>
-          <h2 className="text-base font-bold text-white">
-            Account
-          </h2>
-
-          <ul className="mt-5 space-y-3">
-            {accountLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-teal-400"
-                >
-                  {link.label}
-
-                  <FaArrowUpRightFromSquare size={11} />
-                </Link>
-              </li>
-            ))}
-          </ul>
         </div>
 
         {/* Contact information */}
