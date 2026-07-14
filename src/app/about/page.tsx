@@ -1,3 +1,6 @@
+"use client";
+
+import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
 import {
   FaArrowRight,
@@ -29,36 +32,119 @@ const values = [
   },
 ];
 
+const fadeUp: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 24,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
+};
+
+const fadeLeft: Variants = {
+  hidden: {
+    opacity: 0,
+    x: -30,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
+};
+
+const fadeRight: Variants = {
+  hidden: {
+    opacity: 0,
+    x: 30,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
+};
+
+const staggerContainer: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
 export default function AboutPage() {
   return (
-    <main className="bg-white">
+    <main className="overflow-hidden bg-white">
       {/* Hero */}
       <section className="bg-gradient-to-br from-teal-50 via-white to-slate-100 px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-        <div className="mx-auto max-w-4xl text-center">
-          <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0F766E] text-white shadow-sm">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+          className="mx-auto max-w-4xl text-center"
+        >
+          <motion.span
+            variants={fadeUp}
+            whileHover={{
+              rotate: 6,
+              scale: 1.08,
+            }}
+            className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0F766E] text-white shadow-sm"
+          >
             <FaBuilding size={25} />
-          </span>
+          </motion.span>
 
-          <p className="mt-6 text-sm font-bold uppercase tracking-[0.2em] text-[#0F766E]">
+          <motion.p
+            variants={fadeUp}
+            className="mt-6 text-sm font-bold uppercase tracking-[0.2em] text-[#0F766E]"
+          >
             About Rentora
-          </p>
+          </motion.p>
 
-          <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+          <motion.h1
+            variants={fadeUp}
+            className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl"
+          >
             Making rental discovery simple and organized
-          </h1>
+          </motion.h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+          <motion.p
+            variants={fadeUp}
+            className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg"
+          >
             Rentora connects people searching for rental properties
             with users who want to publish and manage their available
             properties.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </section>
 
       {/* Mission */}
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-2">
-          <div>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{
+              once: true,
+              amount: 0.25,
+            }}
+            variants={fadeLeft}
+          >
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#0F766E]">
               Our Mission
             </p>
@@ -77,19 +163,44 @@ export default function AboutPage() {
               keeping property management simple and secure.
             </p>
 
-            <Link
-              href="/rentals"
-              className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[#0F766E] px-6 py-3 font-bold text-white transition hover:bg-[#115E59]"
+            <motion.div
+              whileHover={{
+                x: 5,
+              }}
+              className="mt-7 w-fit"
             >
-              Browse Rentals
-              <FaArrowRight size={15} />
-            </Link>
-          </div>
+              <Link
+                href="/rentals"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#0F766E] px-6 py-3 font-bold text-white transition hover:bg-[#115E59]"
+              >
+                Browse Rentals
+                <FaArrowRight size={15} />
+              </Link>
+            </motion.div>
+          </motion.div>
 
-          <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-sm sm:p-10">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0F766E]/10 text-[#0F766E]">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{
+              once: true,
+              amount: 0.25,
+            }}
+            variants={fadeRight}
+            whileHover={{
+              y: -6,
+            }}
+            className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-sm sm:p-10"
+          >
+            <motion.div
+              whileHover={{
+                rotate: 5,
+                scale: 1.08,
+              }}
+              className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0F766E]/10 text-[#0F766E]"
+            >
               <FaUsers size={25} />
-            </div>
+            </motion.div>
 
             <h3 className="mt-6 text-2xl font-bold text-slate-900">
               Built for everyone
@@ -100,14 +211,23 @@ export default function AboutPage() {
               their own rental property tomorrow. Rentora supports both
               activities without separate account roles.
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Values */}
       <section className="bg-slate-50 px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-2xl text-center">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{
+              once: true,
+              amount: 0.3,
+            }}
+            variants={fadeUp}
+            className="mx-auto max-w-2xl text-center"
+          >
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#0F766E]">
               What We Value
             </p>
@@ -115,20 +235,39 @@ export default function AboutPage() {
             <h2 className="mt-3 text-3xl font-extrabold text-slate-900 sm:text-4xl">
               A better rental experience
             </h2>
-          </div>
+          </motion.div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{
+              once: true,
+              amount: 0.2,
+            }}
+            variants={staggerContainer}
+            className="mt-10 grid gap-6 md:grid-cols-3"
+          >
             {values.map((value) => {
               const Icon = value.icon;
 
               return (
-                <article
+                <motion.article
                   key={value.title}
-                  className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                  variants={fadeUp}
+                  whileHover={{
+                    y: -7,
+                  }}
+                  className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-lg"
                 >
-                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#0F766E]/10 text-[#0F766E]">
+                  <motion.span
+                    whileHover={{
+                      rotate: 6,
+                      scale: 1.1,
+                    }}
+                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#0F766E]/10 text-[#0F766E]"
+                  >
                     <Icon size={21} />
-                  </span>
+                  </motion.span>
 
                   <h3 className="mt-5 text-xl font-bold text-slate-900">
                     {value.title}
@@ -137,34 +276,52 @@ export default function AboutPage() {
                   <p className="mt-3 text-sm leading-7 text-slate-600">
                     {value.description}
                   </p>
-                </article>
+                </motion.article>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* CTA */}
       <section className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-5xl rounded-3xl bg-[#0F766E] px-6 py-12 text-center text-white sm:px-10">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{
+            once: true,
+            amount: 0.3,
+          }}
+          variants={fadeUp}
+          className="mx-auto max-w-5xl rounded-3xl bg-[#0F766E] px-6 py-12 text-center text-white sm:px-10"
+        >
           <h2 className="text-3xl font-extrabold">
             Start your rental journey with Rentora
           </h2>
 
           <p className="mx-auto mt-4 max-w-2xl leading-7 text-white/80">
-            Explore rental properties or create an account to publish
-            and manage your own listings.
+            Explore available rental properties and find a place that
+            suits your needs.
           </p>
 
-          <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+          <motion.div
+            whileHover={{
+              scale: 1.04,
+            }}
+            whileTap={{
+              scale: 0.97,
+            }}
+            className="mx-auto mt-7 w-fit"
+          >
             <Link
               href="/rentals"
-              className="rounded-xl bg-white px-6 py-3 font-bold text-[#0F766E] transition hover:bg-slate-100"
+              className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-bold text-[#0F766E] transition hover:bg-slate-100"
             >
               Browse Rentals
+              <FaArrowRight size={15} />
             </Link>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
     </main>
   );
