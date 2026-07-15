@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# Rentora
 
-First, run the development server:
+Rentora is a full-stack rental property platform where users can explore rental listings, search and filter properties, view property details, and manage their own rental listings after authentication.
+
+## Live Demo
+
+- Live Link: https://your-frontend.vercel.app
+
+## Repositories
+
+- Frontend: https://github.com/raselahmed2023/Rentora
+- Backend: https://github.com/raselahmed2023/rentora-backend
+
+---
+
+## Features
+
+- User Registration & Login
+- Demo Login
+- Browse Rental Properties
+- Search, Filter & Sort
+- Property Details Page
+- Add Property
+- Manage Own Properties
+- Update & Delete Own Properties
+- Add to Cart (Login Required)
+- Responsive Design
+- Skeleton Loading
+
+---
+
+## Tech Stack
+
+### Frontend
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+
+### Backend
+- Node.js
+- Express.js
+- TypeScript
+- MongoDB
+- Better Auth
+
+---
+
+## Installation
+
+### Frontend
 
 ```bash
+git clone https://github.com/raselahmed2023/Rentora.git
+cd Rentora
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Backend
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+git clone https://github.com/raselahmed2023/rentora-backend.git
+cd rentora-backend
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Demo Account
 
-To learn more about Next.js, take a look at the following resources:
+```
+Email: user@rentora.com
+Password: User@123
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
