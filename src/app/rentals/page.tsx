@@ -288,7 +288,7 @@ export default function BrowseRentalsPage() {
                   </p>
 
                   <Link
-                    href={`/properties/${property.id}`}
+                    href={`/rentals/${property.id}`}
                     className="mt-5 block rounded-xl border border-emerald-700 px-4 py-2.5 text-center font-semibold text-emerald-700 transition hover:bg-emerald-700 hover:text-white"
                   >
                     View Details
