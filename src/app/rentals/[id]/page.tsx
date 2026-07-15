@@ -1,15 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import {
+  useParams,
+  useRouter,
+} from "next/navigation";
 import { useEffect, useState } from "react";
+
 import {
   FaArrowLeft,
   FaBuilding,
+  FaCartShopping,
   FaLocationDot,
 } from "react-icons/fa6";
 
 import { apiFetch } from "@/lib/api";
+import { authClient } from "@/lib/auth-client";
 
 type Property = {
   id: string;
@@ -24,7 +30,12 @@ type Property = {
 
 export default function RentalDetailsPage() {
   const params = useParams<{ id: string }>();
+  const router = useRouter();
+
   const id = params.id;
+
+  const { data: session, isPending } =
+    authClient.useSession();
 
   const [property, setProperty] =
     useState<Property | null>(null);
@@ -34,6 +45,8 @@ export default function RentalDetailsPage() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [cartMessage, setCartMessage] =
+    useState("");
 
   useEffect(() => {
     async function loadProperty() {
@@ -80,6 +93,60 @@ export default function RentalDetailsPage() {
     }
   }, [id]);
 
+  function showCartMessage(message: string) {
+    setCartMessage(message);
+
+    window.setTimeout(() => {
+      setCartMessage("");
+    }, 2500);
+  }
+
+  function handleAddToCart() {
+    if (!property || isPending) {
+      return;
+    }
+
+    if (!session?.user) {
+      router.push("/login");
+      return;
+    }
+
+    const savedCart =
+      localStorage.getItem("rentora-cart");
+
+    let cart: string[] = [];
+
+    if (savedCart) {
+      try {
+        const parsedCart = JSON.parse(savedCart);
+
+        if (Array.isArray(parsedCart)) {
+          cart = parsedCart;
+        }
+      } catch {
+        cart = [];
+      }
+    }
+
+    if (cart.includes(property.id)) {
+      showCartMessage(
+        "This property is already in your cart."
+      );
+      return;
+    }
+
+    cart.push(property.id);
+
+    localStorage.setItem(
+      "rentora-cart",
+      JSON.stringify(cart)
+    );
+
+    showCartMessage(
+      "Property added to cart successfully!"
+    );
+  }
+
   if (loading) {
     return (
       <main className="min-h-screen bg-[#F8F6F1] px-4 py-12">
@@ -105,7 +172,8 @@ export default function RentalDetailsPage() {
           </h1>
 
           <p className="mt-3 text-slate-600">
-            {error || "This property is unavailable."}
+            {error ||
+              "This property is unavailable."}
           </p>
 
           <Link
@@ -121,6 +189,12 @@ export default function RentalDetailsPage() {
 
   return (
     <main className="min-h-screen bg-[#F8F6F1] px-4 py-10">
+      {cartMessage && (
+        <div className="fixed right-5 top-24 z-[60] max-w-sm rounded-xl bg-[#0F766E] px-5 py-4 font-semibold text-white shadow-xl">
+          {cartMessage}
+        </div>
+      )}
+
       <div className="mx-auto max-w-6xl">
         <Link
           href="/rentals"
@@ -165,12 +239,51 @@ export default function RentalDetailsPage() {
 
               <div className="mt-8 border-t border-slate-200 pt-8">
                 <h2 className="text-xl font-bold text-slate-900">
-                  Property overview
+                  Property Overview
                 </h2>
 
                 <p className="mt-4 leading-8 text-slate-600">
                   {property.description}
                 </p>
+              </div>
+
+              <div className="mt-8 border-t border-slate-200 pt-8">
+                <h2 className="text-xl font-bold text-slate-900">
+                  Key Information
+                </h2>
+
+                <div className="mt-4 grid gap-4 sm:grid-cols-3">
+                  <div className="rounded-xl bg-slate-50 p-4">
+                    <p className="text-sm text-slate-500">
+                      Category
+                    </p>
+
+                    <p className="mt-1 font-semibold text-slate-900">
+                      {property.category}
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl bg-slate-50 p-4">
+                    <p className="text-sm text-slate-500">
+                      Location
+                    </p>
+
+                    <p className="mt-1 font-semibold text-slate-900">
+                      {property.location}
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl bg-slate-50 p-4">
+                    <p className="text-sm text-slate-500">
+                      Monthly Rent
+                    </p>
+
+                    <p className="mt-1 font-semibold text-slate-900">
+                      ৳
+                      {property.price.toLocaleString()}
+                    </p>
+                  </div>
+                </div>
               </div>
 
               <div className="mt-8 border-t border-slate-200 pt-8">
@@ -197,12 +310,25 @@ export default function RentalDetailsPage() {
                 {property.shortDescription}
               </p>
 
-              <Link
-                href="/contact"
-                className="mt-6 block rounded-xl bg-[#0F766E] px-5 py-3 text-center font-bold text-white transition hover:bg-[#115E59]"
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                disabled={isPending}
+                className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#0F766E] px-5 py-3 font-bold text-white transition hover:bg-[#115E59] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Contact Owner
-              </Link>
+                <FaCartShopping />
+
+                {isPending
+                  ? "Checking..."
+                  : "Add to Cart"}
+              </button>
+
+              {!session?.user && !isPending && (
+                <p className="mt-3 text-center text-xs text-slate-500">
+                  Login is required to add this
+                  property.
+                </p>
+              )}
             </aside>
           </div>
         </div>
@@ -210,7 +336,7 @@ export default function RentalDetailsPage() {
         {relatedProperties.length > 0 && (
           <section className="mt-14">
             <h2 className="text-2xl font-bold text-slate-900">
-              Related properties
+              Related Properties
             </h2>
 
             <div className="mt-6 grid gap-6 md:grid-cols-3">
@@ -220,12 +346,16 @@ export default function RentalDetailsPage() {
                   className="overflow-hidden rounded-2xl bg-white shadow-sm"
                 >
                   <div className="h-48 bg-slate-200">
-                    {item.imageUrl && (
+                    {item.imageUrl ? (
                       <img
                         src={item.imageUrl}
                         alt={item.title}
                         className="h-full w-full object-cover"
                       />
+                    ) : (
+                      <div className="flex h-full items-center justify-center">
+                        <FaBuilding className="text-slate-400" />
+                      </div>
                     )}
                   </div>
 
@@ -235,7 +365,9 @@ export default function RentalDetailsPage() {
                     </h3>
 
                     <p className="mt-2 text-[#0F766E]">
-                      ৳{item.price.toLocaleString()} / month
+                      ৳
+                      {item.price.toLocaleString()}{" "}
+                      / month
                     </p>
 
                     <Link
