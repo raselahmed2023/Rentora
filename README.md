@@ -5,7 +5,7 @@ Rentora is a full-stack rental property platform where users can explore rental 
 
 ## Live Demo
 
-- Live Link: https://your-frontend.vercel.app
+- Live Link: https://rentora-woad.vercel.app
 
 ## Repositories
 
